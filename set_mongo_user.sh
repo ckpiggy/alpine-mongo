@@ -18,6 +18,14 @@ mongo admin --eval "db.createUser({user: '$USER', pwd: '$PASS', \
 roles:['userAdminAnyDatabase', 'dbAdminAnyDatabase', 'readWriteAnyDatabase']\
 });"
 
+if [ "$DATABASE" != "admin" ]; then
+    echo "=> Creating an ${USER} user with a ${_word} password in MongoDB"
+    mongo admin -u $USER -p $PASS << EOF
+use $DATABASE
+db.createUser({user: '$USER', pwd: '$PASS', roles:[{role:'dbOwner',db:'$DATABASE'}]})
+EOF
+fi
+
 
 echo "=> Done!"
 touch /data/db/.mongodb_password_set
@@ -27,6 +35,5 @@ echo "You can now connect to this MongoDB server using:"
 echo ""
 echo "    mongo $DATABASE -u $USER -p $PASS --host <host> --port <port>"
 echo ""
-echo "Please remember to change the above password as soon as possible!"
 echo "========================================================================"
 
