@@ -1,6 +1,10 @@
 Usage
 
-use command:
+build:
+
+    docker build -t mongo-alpine .
+    
+run:
 
     docker run -e MONGODB_USER="user" \
     -e MONGODB_PASS="user_pwd" \
